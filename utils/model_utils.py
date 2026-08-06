@@ -12,7 +12,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.layers import Input, Dense, Dropout
 from tensorflow.keras.optimizers import Adam, RMSprop, SGD
 from tensorflow.keras import regularizers
 from tensorflow.keras.metrics import AUC as KerasAUC
@@ -62,22 +62,19 @@ def build_neural_network(
         ... )
     """
     model = Sequential()
-    
+    model.add(Input(shape=(input_dim,)))
+
     # Add hidden layers with optional L2 regularization
     for layer_idx in range(n_hidden_layers):
         layer_kwargs = {
             'units': hidden_units,
             'activation': activation
         }
-        
-        # Add input shape for first layer
-        if layer_idx == 0:
-            layer_kwargs['input_shape'] = (input_dim,)
-        
+
         # Add L2 regularization if specified
         if l2_regularization > 0:
             layer_kwargs['kernel_regularizer'] = regularizers.l2(l2_regularization)
-            
+
         model.add(Dense(**layer_kwargs))
         model.add(Dropout(dropout_rate))
     
