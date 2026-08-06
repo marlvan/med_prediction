@@ -410,7 +410,6 @@ class SuperLearner:
         if not os.path.exists(model_path):
             # Train new meta-learner
             meta_learner = LogisticRegression(
-                penalty='l2',
                 C=1.0,
                 solver='liblinear',
                 max_iter=1000,
